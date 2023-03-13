@@ -1,5 +1,9 @@
 # Router Exercise
 
+---
+
+## Scaffolding steps
+
 * scaffold up a new project
 
 * use corepack
@@ -27,7 +31,7 @@
       * "plugin:react/jsx-runtime"
 
 ```bash
-$ cat > pnpm-worspace.yaml << EOF
+$ cat > pnpm-workspace.yaml << EOF
 packages:
 - 'packages/*'
 ```
@@ -35,6 +39,14 @@ packages:
 
 * create packages folder
   * `$ mkdir -p packages/router-exercise`
+
+## Exercise
+
+* Create Router component and a route component that behaves like react router.
+  
+* Implement basename api.
+
+----
 
 1. Using the empty Router, Routes, Route, and Link components in `lib/router`,
    along with the

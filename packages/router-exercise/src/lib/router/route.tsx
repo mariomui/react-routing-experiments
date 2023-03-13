@@ -14,7 +14,7 @@ function useLocation() {
   const history = createBrowserHistory()
   const [pathname, setPathName] = useState(history?.location?.pathname || 'pop')
   useEffect(() => {
-    console.log(history.location.pathname)
+    console.log({ history }, history.location.pathname)
     setPathName(history.location.pathname)
   }, [history.location.pathname])
 
@@ -28,8 +28,9 @@ export function Route({
 }: RouteProps): ReactElement {
 
   const pathname = useLocation()
+  const { basename } = window.history.state;
   console.log({ pathname, path })
-  if (pathname === path) {
+  if (pathname === "/" + basename + path) {
     return <>{element}</>
   }
   return <>{children}</>;

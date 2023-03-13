@@ -22,6 +22,10 @@ export function Router(props: RouterProps): ReactElement {
    * BrowserRouter uses the html5api strategy
    * Hash router uses the hash strategy
    */
+  if (props.basename) {
+    // report to history somehow.
+    window.history.pushState({ basename: props.basename }, "")
+  }
   return <div>
     {props?.children}
   </div>

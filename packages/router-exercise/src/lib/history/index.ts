@@ -10,6 +10,7 @@ export interface CustomHistory {
   readonly action: Action // last action that modified current location , will be Action.Pop on initial load
 
   readonly location: CustomLocation
+  readonly history: History
 }
 
 type ReadOnlyFunction = <T>(obj: T) => Readonly<T>
@@ -24,6 +25,7 @@ export function createBrowserHistory(
   const { window = document.defaultView! } = options
 
   const { pathname, search, hash } = window.location
+  const { history } = window
   const location = readOnly<CustomLocation>({
     pathname,
     search,
@@ -35,9 +37,18 @@ export function createBrowserHistory(
   i only need the history if i'm thinking of going back and forth
   and app.
   */
+
+  const historyProxyHandler: ProxyHandler<History> = {
+    get(target, prop) {
+      return Reflect.get(target, prop)
+    },
+  }
+  const customHistory = new Proxy(history, historyProxyHandler)
+
   return {
     action: ACTION_MAPPING.POP,
     location,
+    history: customHistory,
   }
 }
 
