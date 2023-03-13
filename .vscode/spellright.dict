@@ -1,0 +1,9 @@
+pnpm
+corepack
+webpack
+basename
+react-dom
+domdep
+deps
+transpiles
+tsconfig

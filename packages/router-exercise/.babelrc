@@ -1,0 +1,44 @@
+{
+  "targets": {
+    "node": "18.13.0"
+  },
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic" // defaults to classic
+      }
+    ],
+    [
+      "@babel/preset-typescript"
+    ]
+  ]
+  // ,
+  // "env": {
+  //   "development": {
+  // "presets": [
+  //   [
+  //     "@babel/preset-env",
+  //     {
+  //       "loose": true
+  //     }
+  //   ],
+  //   [
+  //     "@babel/preset-react",
+  //     {
+  //       "runtime": "automatic" // defaults to classic
+  //     }
+  //   ],
+  //   [
+  //     "@babel/preset-typescript"
+  //   ]
+  // ]
+  //   }
+  // }
+}
