@@ -42,6 +42,9 @@ export function createBrowserHistory(
   let listeners: any = []
   function listen(messenger: any) {
     listeners.push(messenger)
+    return () => {
+      listeners = []
+    }
   }
   function activateListeners(location: any) {
     listeners.forEach((l) => l(location))
