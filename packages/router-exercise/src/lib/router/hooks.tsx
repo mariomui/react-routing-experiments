@@ -1,7 +1,6 @@
 // // import { Location } from 'history'
 
-import { CustomLocation, createBrowserHistory } from "@lib/history"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { RouterContext } from ".";
 
 // type Navigate = (to: string) => void
@@ -17,11 +16,14 @@ export function useLocation() {
 
   const { history } = useContext(RouterContext);
   const [location, setLocation] = useState(history?.location)
-  useEffect(() => {
-    if (history?.location?.pathname) {
-      console.log('fires?')
-      setLocation(history?.location)
+  const ref = useRef<any>(null)
+  ref.current = setLocation
+  history.listen(
+    (_location: any) => {
+      console.log('location', _location)
+      ref.current(_location)
     }
-  }, [history?.location?.pathname])
+  )
   return location;
+
 }

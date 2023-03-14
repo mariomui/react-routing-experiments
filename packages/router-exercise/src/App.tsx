@@ -31,7 +31,7 @@ function App() {
         {/* LInks do not work outside of a router sandwich */}
         <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
-        testing
+
         {/* that means that the routes should actuall be route registering */}
         <Border>
 

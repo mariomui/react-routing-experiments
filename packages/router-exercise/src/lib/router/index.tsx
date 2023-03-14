@@ -1,6 +1,6 @@
 
 import { BrowserHistoryAndOther, CustomHistory, CustomLocation, createBrowserHistory } from '@lib/history';
-import { ReactElement, ReactNode, createContext, useContext, useEffect } from 'react'
+import { ReactElement, ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
 type RouterProps = {
   history: BrowserHistoryAndOther;
@@ -24,18 +24,16 @@ export function Router(props: RouterProps): ReactElement {
    * Hash router uses the hash strategy
    */
   const { basename = "", history = createBrowserHistory() } = props;
-  if (basename && history.pushState) {
-    console.log(history, 'history')
-    console.log('fired')
-    history.pushState({ basename }, "")
-  }
 
+  history.pushState({ basename }, "")
+
+  const [_history] = useState(history)
   if (!history) {
     return <div>nope</div>
   }
   return <div>
 
-    <RouterContext.Provider value={{ history }} >
+    <RouterContext.Provider value={{ history: _history }} >
 
       {props?.children}
     </RouterContext.Provider>

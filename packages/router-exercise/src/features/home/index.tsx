@@ -6,7 +6,7 @@ export function Home() {
   return (
     <div>
       <h1>Home</h1>
-      <p>Location.pathname is: {location.pathname}</p>
+      {/* <p>Location.pathname is: {location.pathname}</p> */}
       {/* <button type="button" onClick={() => navigate('/about')}> */}
       {/* Navigate */}
       {/* </button> */}

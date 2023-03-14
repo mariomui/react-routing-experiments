@@ -12,6 +12,7 @@ export interface BrowserHistoryAndOther extends CustomHistory {
   // last action that modified current location , will be Action.Pop on initial load
 
   readonly location: CustomLocation
+  listen: any
 }
 
 type ReadOnlyFunction = <T>(obj: T) => Readonly<T>
@@ -27,41 +28,50 @@ export function createBrowserHistory(
 
   const { pathname, search, hash } = window.location
   const { history } = window
-  const location = readOnly<CustomLocation>({
+  const location = <CustomLocation>{
     pathname,
     search,
     hash,
-  })
+  }
   const workspace = {
     action: ACTION_MAPPING.POP,
     location,
   }
+
+  // eslint-disable-next-line prefer-const
+  let listeners = []
+  function listen(messenger: any) {
+    listeners.push(messenger)
+  }
+  function activateListeners(location: any) {
+    listeners.forEach((l) => l(location))
+  }
+
   const customHistory: CustomHistory = new Proxy<CustomHistory>(history, {
     get(t, p: keyof CustomHistory, r) {
-      console.log({ t, p })
       if (p === 'pushState') {
         return (...args: any) => {
-          console.log('changes')
-          const [state] = args
-          console.log({ state })
+          const [state, x, path] = args
+
           // Object.assign(t.state, ...state)
-          Reflect.apply(t[p], t, args)
+          const _location = {
+            ...location,
+            pathname: path,
+          }
+          workspace.location = _location
+          activateListeners(_location)
+          Reflect.apply(t[p], t, [state, x, path])
         }
       }
       return Reflect.get(t, p)
     },
   })
-  console.log({ customHistory })
-  /*
-  the remix runs guy default the action to pop. 
-  todo work on this later after i have the routes up
-  i only need the history if i'm thinking of going back and forth
-  and app.
-  */
+
   return {
     ...workspace,
     pushState: customHistory.pushState,
     state: customHistory.state,
+    listen,
   }
 }
 

@@ -10,12 +10,9 @@ export function Link({ to, children }: LinkProps): ReactElement {
   const { history: _history } = useContext(RouterContext)
   const _to = join('/', _history?.state?.basename || '', to)
   const handleClick = () => {
-    console.log({ _history })
-    if (_history) {
+    // console.log({ _history })
 
-      console.log("handle", { historystate: _history?.state }, { _to })
-      _history?.pushState(_history?.state, '', _to)
-    }
+    _history.pushState(_history?.state, '', _to)
   }
   return (
 

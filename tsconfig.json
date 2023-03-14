@@ -1,9 +1,4 @@
 {
-  "references": [
-    {
-      "path": "./packages/router-exercise/tsconfig.json"
-    }
-  ],
   "compilerOptions": {
     "jsx": "preserve",
     /* Visit https://aka.ms/tsconfig to read more about this file */

@@ -1,9 +1,9 @@
 // import { ReactElement } from 'react'
 
-import { ReactElement, useContext, useMemo } from "react"
+import { ReactElement, useContext } from "react"
 import { useLocation } from "./hooks"
-import * as nodepath from 'path';
 import { RouterContext } from ".";
+import { join } from "path";
 type RouteProps = {
   path?: string
   element: ReactElement
@@ -19,19 +19,16 @@ export function Route({
   children,
 }: RouteProps): ReactElement {
 
-  const location = useLocation()
   const { history: _history } = useContext(RouterContext)
+  const location = useLocation()
   const basename = _history?.state?.basename || '';
 
-  //  register route.
+  const finalPath = join(DOMAIN, basename, path || '')
 
-  const finalPath = nodepath.join(DOMAIN, basename, path || '')
-  // const url = new URL(_path, DOMAIN).href
 
-  // rende route
-  if (location?.pathname === finalPath) {
-    return <>{location?.pathname}{element}</>
+  if (location.pathname === finalPath) {
+    return <>{location.pathname} :: {path} ::: {element}</>
   }
-
-  return <>{(location?.pathname === finalPath) + ""}finalPath:{finalPath}{children}</>;
+  return <>{null}</>;
+  // return <>{(location?.pathname === finalPath) + ""}finalPath:{finalPath}{children}</>;
 }
