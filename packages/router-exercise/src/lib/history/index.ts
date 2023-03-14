@@ -39,7 +39,7 @@ export function createBrowserHistory(
   }
 
   // eslint-disable-next-line prefer-const
-  let listeners = []
+  let listeners: any = []
   function listen(messenger: any) {
     listeners.push(messenger)
   }
