@@ -1,10 +1,9 @@
-// import { History } from 'history'
-// import { createBrowserHistory } from '@lib/history'
-import { ReactElement, ReactNode } from 'react'
-// import { createBrowserHistory } from '../history'
+
+import { BrowserHistoryAndOther, CustomHistory, CustomLocation, createBrowserHistory } from '@lib/history';
+import { ReactElement, ReactNode, createContext, useContext, useEffect } from 'react'
 
 type RouterProps = {
-  // history: History
+  history: BrowserHistoryAndOther;
   // history?: any,
   basename?: string;
   forceRefresh?: boolean;
@@ -17,18 +16,30 @@ type RouterProps = {
 // getUserConfirmation={optionalFunc}
 // keyLength={optionalNumber}
 
+export const RouterContext = createContext<{ history: BrowserHistoryAndOther }>({ history: createBrowserHistory() })
+
 export function Router(props: RouterProps): ReactElement {
   /**
    * BrowserRouter uses the html5api strategy
    * Hash router uses the hash strategy
    */
-  if (props.basename) {
-    // report to history somehow.
-    window.history.pushState({ basename: props.basename }, "")
+  const { basename = "", history = createBrowserHistory() } = props;
+  if (basename && history.pushState) {
+    console.log(history, 'history')
+    console.log('fired')
+    history.pushState({ basename }, "")
+  }
+
+  if (!history) {
+    return <div>nope</div>
   }
   return <div>
-    {props?.children}
-  </div>
+
+    <RouterContext.Provider value={{ history }} >
+
+      {props?.children}
+    </RouterContext.Provider>
+  </div >
 }
 // export * from '../history'
 /*

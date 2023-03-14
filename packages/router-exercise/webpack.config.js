@@ -2,8 +2,10 @@
 // @ts-check
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+
 const isProduction = process.env.NODE_ENV == 'production'
-let i = 0
+
 /** @type {import("webpack").Configuration} */
 const config = {
   entry: './src/index.tsx',
@@ -21,6 +23,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),
+    new NodePolyfillPlugin({ includeAliases: ['path', 'url'] }),
   ],
   module: {
     rules: [

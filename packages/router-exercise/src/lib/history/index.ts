@@ -5,12 +5,13 @@ export type Action = (typeof ACTION_MAPPING)[keyof typeof ACTION_MAPPING]
 // instead of enuns that turn
 
 type LocationPicks = 'pathname' | 'search' | 'hash'
-type CustomLocation = Pick<Location, LocationPicks>
-export interface CustomHistory {
-  readonly action: Action // last action that modified current location , will be Action.Pop on initial load
+export type CustomLocation = Pick<Location, LocationPicks>
+export type CustomHistory = Pick<History, 'pushState' | 'state'>
+export interface BrowserHistoryAndOther extends CustomHistory {
+  readonly action: Action
+  // last action that modified current location , will be Action.Pop on initial load
 
   readonly location: CustomLocation
-  readonly history: History
 }
 
 type ReadOnlyFunction = <T>(obj: T) => Readonly<T>
@@ -20,7 +21,7 @@ const readOnly: ReadOnlyFunction = (obj) => {
 
 export function createBrowserHistory(
   options: { window?: Window } = {}
-): CustomHistory {
+): BrowserHistoryAndOther {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { window = document.defaultView! } = options
 
@@ -31,24 +32,36 @@ export function createBrowserHistory(
     search,
     hash,
   })
+  const workspace = {
+    action: ACTION_MAPPING.POP,
+    location,
+  }
+  const customHistory: CustomHistory = new Proxy<CustomHistory>(history, {
+    get(t, p: keyof CustomHistory, r) {
+      console.log({ t, p })
+      if (p === 'pushState') {
+        return (...args: any) => {
+          console.log('changes')
+          const [state] = args
+          console.log({ state })
+          // Object.assign(t.state, ...state)
+          Reflect.apply(t[p], t, args)
+        }
+      }
+      return Reflect.get(t, p)
+    },
+  })
+  console.log({ customHistory })
   /*
   the remix runs guy default the action to pop. 
   todo work on this later after i have the routes up
   i only need the history if i'm thinking of going back and forth
   and app.
   */
-
-  const historyProxyHandler: ProxyHandler<History> = {
-    get(target, prop) {
-      return Reflect.get(target, prop)
-    },
-  }
-  const customHistory = new Proxy(history, historyProxyHandler)
-
   return {
-    action: ACTION_MAPPING.POP,
-    location,
-    history: customHistory,
+    ...workspace,
+    pushState: customHistory.pushState,
+    state: customHistory.state,
   }
 }
 

@@ -1,9 +1,13 @@
 // import { useState } from 'react'
 
+import { About } from "@features/about"
 import { Home } from "@features/home"
 import { Router } from "@lib/router"
+import { Link } from "@lib/router/link"
 // import { Link } from "@lib/router/link"
 import { Route } from "@lib/router/route"
+import { Border } from "./cmps"
+import { createBrowserHistory } from "@lib/history"
 
 
 
@@ -11,22 +15,37 @@ import { Route } from "@lib/router/route"
 
 // import { Home } from '~/features/home'
 // import { About } from '~/features/about'
+const history = createBrowserHistory()
 function App() {
   return (
     <div>
-      Loadeedd
-      <Router basename="hyacinth">
-        {/* <Link to="/mario" /> */}
-        <Route path="/home" element={<Home />} />
-      </Router>
-      {/* <h1>Router Exercise</h1>
-        <Link to="/">Home</Link>
+      <h1>Router Exercise</h1>
+      {/* 
+      <Link to="/">Home</Link>
+      Cannot read properties of undefined (reading 'history') */}
+      {/* that means there is an object that link reads history from. */}
+      <Router history={history} basename="hyacinth">
+        {/* router provides an object to its children.
+          I can eitehr do context api or pushstate.
+        */}
+        {/* LInks do not work outside of a router sandwich */}
+        <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
+        testing
+        {/* that means that the routes should actuall be route registering */}
+        <Border>
 
-        <Routes>
+          <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
-        </Routes>
-      */}
+        </Border>
+      </Router>
+      {/* 
+
+      <Link to="/about">About</Link>
+
+      <Routes>
+      </Routes> */}
+
     </div >
   )
 }

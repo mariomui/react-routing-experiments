@@ -1,12 +1,13 @@
 {
-  "targets": {
-    "node": "18.13.0"
-  },
+  "targets": "> 0.25%, not dead",
   "presets": [
     [
       "@babel/preset-env",
       {
-        "loose": true
+        // "loose": true,
+        "useBuiltIns": "usage",
+        "corejs": "3.29.1",
+        "debug": true
       }
     ],
     [

@@ -1,25 +1,17 @@
 // import { ReactElement } from 'react'
 
-import { createBrowserHistory } from "@lib/history"
-import { ReactElement, useEffect, useState } from "react"
-
+import { ReactElement, useContext, useMemo } from "react"
+import { useLocation } from "./hooks"
+import * as nodepath from 'path';
+import { RouterContext } from ".";
 type RouteProps = {
   path?: string
   element: ReactElement
   index?: boolean
   children?: (typeof Route)[]
 }
+const DOMAIN = '/';
 
-function useLocation() {
-  const history = createBrowserHistory()
-  const [pathname, setPathName] = useState(history?.location?.pathname || 'pop')
-  useEffect(() => {
-    console.log({ history }, history.location.pathname)
-    setPathName(history.location.pathname)
-  }, [history.location.pathname])
-
-  return pathname;
-}
 export function Route({
   path,
   element,
@@ -27,11 +19,19 @@ export function Route({
   children,
 }: RouteProps): ReactElement {
 
-  const pathname = useLocation()
-  const { basename } = window.history.state;
-  console.log({ pathname, path })
-  if (pathname === "/" + basename + path) {
-    return <>{element}</>
+  const location = useLocation()
+  const { history: _history } = useContext(RouterContext)
+  const basename = _history?.state?.basename || '';
+
+  //  register route.
+
+  const finalPath = nodepath.join(DOMAIN, basename, path || '')
+  // const url = new URL(_path, DOMAIN).href
+
+  // rende route
+  if (location?.pathname === finalPath) {
+    return <>{location?.pathname}{element}</>
   }
-  return <>{children}</>;
+
+  return <>{(location?.pathname === finalPath) + ""}finalPath:{finalPath}{children}</>;
 }
