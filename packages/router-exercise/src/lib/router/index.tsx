@@ -15,6 +15,7 @@ type RouterProps = {
 // forceRefresh={optionalBool}
 // getUserConfirmation={optionalFunc}
 // keyLength={optionalNumber}
+export const Mario = createContext({})
 
 export const RouterContext = createContext<{ history: BrowserHistoryAndOther }>({ history: createBrowserHistory() })
 

@@ -12,12 +12,13 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: ({ hash }) => '/',
+    clean: true,
   },
   devServer: {
     open: true,
     host: 'localhost',
     historyApiFallback: true,
-    port: '9999',
+    port: 9999,
   },
   plugins: [
     new HtmlWebpackPlugin({

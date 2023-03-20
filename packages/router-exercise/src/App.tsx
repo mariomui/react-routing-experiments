@@ -35,7 +35,9 @@ function App() {
         {/* that means that the routes should actuall be route registering */}
         <Border>
 
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home />}>
+            ddd
+          </Route>
           <Route path="/about" element={<About />} />
         </Border>
       </Router>

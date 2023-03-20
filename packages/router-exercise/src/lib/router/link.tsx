@@ -9,6 +9,7 @@ type LinkProps = {
 export function Link({ to, children }: LinkProps): ReactElement {
   const { history: _history } = useContext(RouterContext)
   const _to = join('/', _history?.state?.basename || '', to)
+  console.log({ _to })
   const handleClick = () => {
     // console.log({ _history })
 
